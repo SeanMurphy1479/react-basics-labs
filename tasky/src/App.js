@@ -7,9 +7,9 @@ function App() {
 
   const[ taskState, serTaskState] = useState({
     tasks: [
-      { title:"Dishes", desc:"Empty Dishwasher",deadline:"Today"},
-      { title:"Laundry", desc:"Fold clothes and put away", deadline:"Tommorow"},
-      { title:"Tidy up", deadline:"Today"}
+      { id: 1, title:"Dishes", desc:"Empty Dishwasher",deadline:"Today"},
+      { id: 2, title:"Laundry", desc:"Fold clothes and put away", deadline:"Tommorow"},
+      { id: 3, title:"Tidy up", deadline:"Today"}
     ]
   });
 
@@ -21,6 +21,7 @@ function App() {
           title={task.title}
           desc={task.desc}
           deadline={task.deadline}
+          key={task.id}
             />   
       ))}
   </div>
