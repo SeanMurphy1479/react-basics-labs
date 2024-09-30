@@ -16,12 +16,15 @@ function App() {
   return (
     <div className="container">
       <h1>Tasky</h1>
-      <Task title={taskState.tasks[0].title} deadline={taskState.tasks[0].deadline} desc={taskState.tasks[0].desc}/>
-      <Task title={taskState.tasks[1].title} deadline={taskState.tasks[1].deadline} desc={taskState.tasks[1].desc}/>
-      <Task title={taskState.tasks[2].title} deadline={taskState.tasks[2].deadline} desc={taskState.tasks[2].desc}/>
-
-    </div>
-  );
+      {taskState.tasks.map((task) =>(
+        <Task
+          title={task.title}
+          desc={task.desc}
+          deadline={task.deadline}
+            />   
+      ))}
+  </div>
+  )
 }
 
 export default App;
