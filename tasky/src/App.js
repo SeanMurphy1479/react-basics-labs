@@ -1,49 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Task from './Task';
 import AddTaskForm from './components/Form';
-import React, {useState} from 'react';
+import './App.css';
 
 function App() {
-
-  const[ taskState, setTaskState] = useState({
+  const [taskState, setTaskState] = useState({
     tasks: [
-      { id: 1, title:"Dishes", desc:"Empty Dishwasher", deadline:"Today", done: false},
-      { id: 2, title:"Laundry", desc:"Fold clothes and put away", deadline:"Tommorow", done: false},
-      { id: 3, title:"Tidy up", deadline:"Today", done: false}
+      { id: uuidv4(), title: "Dishes", desc: "Empty Dishwasher", deadline: "Today", done: false, priority: "High" },
+      { id: uuidv4(), title: "Laundry", desc: "Fold clothes and put away", deadline: "Tomorrow", done: false, priority: "Medium" },
+      { id: uuidv4(), title: "Tidy up", desc: "", deadline: "Today", done: false, priority: "Low" }
     ]
+  });
+
+  const [formState, setFormState] = useState({
+    title: "",
+    desc: "",
+    deadline: "",
+    priority: "Low" // Default value for priority
   });
 
   const doneHandler = (taskIndex) => {
     const tasks = [...taskState.tasks];
-    tasks[taskIndex].done = !tasks[taskIndex].done
-    setTaskState({tasks});
-    console.log('${taskIndex} ${tasks[taskIndex].done}');
-  }
+    tasks[taskIndex].done = !tasks[taskIndex].done;
+    setTaskState({ tasks });
+  };
 
   const deleteHandler = (taskIndex) => {
     const tasks = [...taskState.tasks];
     tasks.splice(taskIndex, 1);
-    setTaskState({tasks});
-  } 
+    setTaskState({ tasks });
+  };
+
+  const formChangeHandler = (event) => {
+    const { name, value } = event.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const formSubmitHandler = (event) => {
+    event.preventDefault();
+    const tasks = [...taskState.tasks, { ...formState, id: uuidv4(), done: false }];
+    setTaskState({ tasks });
+    setFormState({ title: "", desc: "", deadline: "", priority: "Low" }); // Reset form
+  };
 
   return (
     <div className="container">
       <h1>Tasky</h1>
-      {taskState.tasks.map((task, index) =>(
+      {taskState.tasks.map((task, index) => (
         <Task
+          key={task.id}
           title={task.title}
           desc={task.desc}
           deadline={task.deadline}
-          key={task.id}
+          priority={task.priority}
           done={task.done}
           markDone={() => doneHandler(index)}
-          deleteTask = {() => deleteHandler(index)}
-            />   
+          deleteTask={() => deleteHandler(index)}
+        />
       ))}
-      <AddTaskForm />
-  </div>
-  )
+      <AddTaskForm submit={formSubmitHandler} change={formChangeHandler} />
+    </div>
+  );
 }
 
 export default App;

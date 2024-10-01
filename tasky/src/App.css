@@ -84,3 +84,15 @@ form {
   width: 50%;
   margin: auto;
 }
+
+.high {
+ background-color: red;
+}
+
+.medium{
+  background-color: yellow;
+}
+
+.low{
+  background-color: green;
+}
